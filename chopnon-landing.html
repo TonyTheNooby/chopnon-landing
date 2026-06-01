@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Chóp Nón - Khám Phá Hành Trình NONI</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #984307;
+    --primary-dark: #6b2e04;
+    --secondary: #934b10;
+    --accent: #f9d423;
+    --accent-light: #fff3b0;
+    --surface: #fff8f0;
+    --surface-container: #fdedc7;
+    --surface-low: #fff2d8;
+    --on-surface: #221b04;
+    --on-surface-variant: #554339;
+    --outline: #dcc1b5;
+    --white: #ffffff;
+    --radius-blob: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--surface);
+    color: var(--on-surface);
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(255,248,240,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(220,193,181,0.25);
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1280px; margin: 0 auto; padding: 1rem 2rem;
+  }
+  .logo {
+    display: flex; align-items: center; gap: .5rem;
+    font-family: 'Comfortaa', cursive; font-size: 1.5rem; font-weight: 700;
+    color: var(--primary); text-decoration: none; letter-spacing: -.5px;
+  }
+  .logo img { height: 44px; width: auto; object-fit: contain; }
+  .nav-links { display: flex; align-items: center; gap: 2.5rem; }
+  .nav-links a {
+    font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: .95rem;
+    color: var(--on-surface-variant); text-decoration: none; transition: color .2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 3px;
+    background: var(--accent); border-radius: 99px; transition: width .3s;
+  }
+  .nav-links a:hover { color: var(--primary); }
+  .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+  .nav-links a.active { color: var(--primary); font-weight: 700; }
+  .nav-actions { display: flex; gap: .5rem; }
+  .nav-btn {
+    width: 42px; height: 42px; border-radius: 50%; border: none; cursor: pointer;
+    background: transparent; color: var(--on-surface-variant); font-size: 1.3rem;
+    display: flex; align-items: center; justify-content: center; transition: background .2s;
+    position: relative; text-decoration: none;
+  }
+  .cart-count {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--primary);
+    border: 2px solid var(--surface);
+    font-family: 'Quicksand', sans-serif;
+    font-size: .72rem;
+    font-weight: 800;
+    line-height: 14px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .cart-count.show { display: flex; }
+  .nav-btn:hover { background: var(--surface-container); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; }
+  .hamburger span { width: 24px; height: 2px; background: var(--primary); border-radius: 2px; transition: all .3s; }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh; display: flex; align-items: center;
+    padding: 6rem 2rem 4rem;
+    position: relative; overflow: hidden;
+  }
+  .hero-blob-1 {
+    position: absolute; width: 500px; height: 500px;
+    background: var(--accent); opacity: .25; border-radius: 50%;
+    filter: blur(80px); top: -10%; right: -5%; z-index: 0;
+    animation: blobFloat 14s ease-in-out infinite alternate;
+  }
+  .hero-blob-2 {
+    position: absolute; width: 320px; height: 320px;
+    background: #fd9f5f; opacity: .2; border-radius: 50%;
+    filter: blur(70px); bottom: 5%; left: -5%; z-index: 0;
+    animation: blobFloat 10s ease-in-out infinite alternate-reverse;
+  }
+  @keyframes blobFloat {
+    0% { transform: translate(0,0) scale(1); }
+    100% { transform: translate(30px,50px) scale(1.12); }
+  }
+
+  .hero-inner {
+    max-width: 1280px; margin: 0 auto; width: 100%;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .4rem;
+    padding: .5rem 1.25rem; background: var(--accent); color: var(--primary);
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: .8rem;
+    text-transform: uppercase; letter-spacing: .1em; border-radius: 99px;
+    box-shadow: 0 4px 16px rgba(249,212,35,.45); transform: rotate(-2deg);
+    width: fit-content; margin-bottom: 1.5rem;
+  }
+  .hero-title {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(3rem, 6vw, 5.5rem); line-height: 1.05;
+    color: var(--primary); letter-spacing: -2px; margin-bottom: 1.5rem;
+  }
+  .hero-title .noni-word {
+    color: #ff6b6b; background: var(--white);
+    padding: 0 .1em; letter-spacing: -2px;
+  }
+  .hero-subtitle {
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.3rem;
+    color: var(--primary); margin-bottom: 1rem;
+  }
+  .hero-text { color: var(--on-surface-variant); line-height: 1.75; font-weight: 400; max-width: 480px; }
+  .hero-quote {
+    border-left: 5px solid var(--accent); padding-left: 1rem;
+    font-style: italic; font-weight: 600; color: var(--on-surface);
+    margin: 1rem 0; font-size: 1rem;
+  }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 2rem; }
+  .btn-primary, .btn-outline, .btn-cta { text-decoration: none; }
+  .btn-primary {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: .9rem 2.2rem; background: var(--secondary); color: #fff;
+    border: none; border-radius: 99px; font-family: 'Quicksand', sans-serif;
+    font-weight: 700; font-size: 1.05rem; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(147,75,16,.35); transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(147,75,16,.4); }
+  .btn-outline {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: .9rem 2.2rem; background: #fff; color: var(--primary);
+    border: 3px solid var(--accent); border-radius: 99px;
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.05rem;
+    cursor: pointer; transition: background .2s, transform .2s;
+  }
+  .btn-outline:hover { background: var(--accent); transform: translateY(-3px); }
+
+  .hero-image-wrap {
+    position: relative; display: flex; justify-content: center; align-items: center;
+  }
+  .hero-img-frame {
+    width: min(440px, 90vw); aspect-ratio: 1/1; border-radius: 3rem;
+    overflow: hidden; border: 8px solid #fff;
+    box-shadow: 0 32px 80px rgba(152,67,7,.2);
+    transform: rotate(3deg); transition: transform .5s ease;
+  }
+  .hero-img-frame:hover { transform: rotate(0deg); }
+  .hero-img-frame img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-float-blob {
+    position: absolute; top: -40px; right: -40px;
+    width: 120px; height: 120px; background: rgba(249,212,35,.3);
+    border-radius: 50%; animation: floatY 3s ease-in-out infinite;
+  }
+  .hero-tag {
+    position: absolute; bottom: -24px; left: -24px;
+    background: #fff; padding: 1rem 1.5rem; border-radius: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,.12); border: 3px solid var(--secondary);
+    transform: rotate(-6deg); animation: floatY 3s ease-in-out infinite;
+    animation-delay: 1s;
+    font-family: 'Comfortaa', cursive; font-weight: 700; color: var(--secondary);
+    font-size: .95rem;
+  }
+  @keyframes floatY {
+    0%,100% { transform: rotate(-6deg) translateY(0); }
+    50% { transform: rotate(-6deg) translateY(-10px); }
+  }
+
+  /* ── INTRO ── */
+  .section { padding: 6rem 2rem; }
+  .section-inner { max-width: 1280px; margin: 0 auto; }
+
+  .intro { background: var(--surface-low); }
+  .intro-inner {
+    display: flex; flex-direction: row; align-items: center;
+    gap: 5rem; max-width: 1280px; margin: 0 auto;
+  }
+  .intro-text { flex: 1; }
+  .section-title {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(2.2rem, 4vw, 3.5rem); color: var(--primary);
+    margin-bottom: 2rem; letter-spacing: -1px; line-height: 1.1;
+  }
+  .intro-body { color: var(--on-surface-variant); font-size: 1.05rem; line-height: 1.8; font-weight: 400; }
+  .intro-body p + p { margin-top: 1rem; }
+  .intro-blockquote {
+    background: #fff; padding: 2rem 2.5rem;
+    border-radius: 2rem; border-left: 8px solid var(--accent);
+    box-shadow: 0 8px 40px rgba(249,212,35,.2); margin-top: 1.5rem;
+    font-style: italic; font-size: 1.05rem; line-height: 1.8; color: var(--on-surface);
+  }
+  .intro-image { flex: 1; border-radius: 3rem; overflow: hidden; box-shadow: 0 24px 64px rgba(152,67,7,.15); }
+  .intro-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ── COLLECTION ── */
+  .collection { background: var(--surface); }
+  .section-header { text-align: center; margin-bottom: 4rem; }
+  .section-header p { color: var(--on-surface-variant); font-size: 1.1rem; font-weight: 400; max-width: 560px; margin: 1rem auto 0; line-height: 1.7; }
+
+  .cards-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .noni-card { cursor: pointer; }
+  .noni-card-img {
+    aspect-ratio: 3/4; border-radius: 2.5rem; overflow: hidden;
+    border: 4px solid transparent; transition: all .4s;
+    box-shadow: 0 4px 24px rgba(152,67,7,.1); margin-bottom: 1rem; position: relative;
+  }
+  .noni-card:hover .noni-card-img {
+    border-color: var(--accent);
+    box-shadow: 0 16px 48px rgba(152,67,7,.2);
+    transform: translateY(-8px);
+  }
+  .noni-card-img img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s ease;
+  }
+  .noni-card:hover .noni-card-img img { transform: scale(1.08); }
+  .noni-card h3 {
+    font-family: 'Comfortaa', cursive; font-weight: 700; font-size: 1.3rem;
+    color: var(--primary); text-align: center;
+  }
+  .collection-cta { text-align: center; margin-top: 3.5rem; }
+  .btn-cta {
+    display: inline-flex; align-items: center; gap: .75rem;
+    padding: 1.1rem 2.8rem; background: var(--primary); color: #fff;
+    border: none; border-radius: 99px; font-family: 'Quicksand', sans-serif;
+    font-weight: 700; font-size: 1.1rem; cursor: pointer;
+    box-shadow: 0 8px 32px rgba(152,67,7,.3); transition: all .2s;
+  }
+  .btn-cta:hover { background: var(--secondary); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(152,67,7,.4); }
+  .btn-cta svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+
+  /* ── ECOSYSTEM ── */
+  .ecosystem { background: #fff; border-radius: 5rem 5rem 0 0; }
+  .eco-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; }
+  .eco-card { cursor: pointer; }
+  .eco-img-wrap {
+    aspect-ratio: 1/1; border-radius: 2.5rem; overflow: hidden;
+    border: 4px solid transparent; background: var(--surface-low);
+    position: relative; box-shadow: 0 4px 20px rgba(152,67,7,.08);
+    transition: all .4s; margin-bottom: 1rem;
+  }
+  .eco-card:hover .eco-img-wrap { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 16px 40px rgba(152,67,7,.18); }
+  .eco-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+  .eco-card:hover .eco-img-wrap img { transform: scale(1.08); }
+  .cart-btn {
+    position: absolute; bottom: 1rem; right: 1rem;
+    background: var(--secondary); color: #fff;
+    width: 44px; height: 44px; border-radius: 12px; border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; opacity: 0; transition: opacity .3s, transform .2s;
+    box-shadow: 0 4px 16px rgba(0,0,0,.2); font-size: 1.1rem;
+  }
+  .eco-card:hover .cart-btn { opacity: 1; }
+  .cart-btn:hover { transform: scale(1.1); }
+  .eco-card h4 { font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+  .eco-card .eco-desc { color: var(--on-surface-variant); font-size: .875rem; margin: .25rem 0 .75rem; }
+  .eco-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .eco-price { font-family: 'Quicksand', sans-serif; font-weight: 800; font-size: 1.05rem; color: var(--secondary); }
+  .add-btn {
+    padding: .45rem 1rem; background: rgba(249,212,35,.2); color: var(--primary);
+    border: none; border-radius: 10px; font-family: 'Quicksand', sans-serif;
+    font-weight: 700; font-size: .8rem; cursor: pointer; transition: background .2s;
+  }
+  .add-btn:hover { background: var(--accent); }
+
+  /* ── VALUES ── */
+  .values {
+    padding: 6rem 2rem; position: relative; overflow: hidden;
+    background-image: linear-gradient(rgba(152,67,7,.88), rgba(152,67,7,.88)),
+      url('https://lh3.googleusercontent.com/aida-public/AB6AXuCF22h4xTehBdrjJCu75rPOmx6cAzlsbnHcYJJimmqH5jlr5NEvwC68YgcGFlfX2RBWn9GiWqWfKFfqoT93RD7wNW911MVLgtl3NKypO_90LZ1eZDMny1NaUA89N7SEK-QYL2zzUSGI-fUa8krAtxuPXl3QERQH9Vbun3gCU6DXI9dha7-us4wzBA2zMv52SryHDQVgOjROUGsDgU1spfEWYPhhNhpIkiqIirdswhljtQbami7LBpeP2U38spmkMffYFrxy_qfqgCsh');
+    background-size: cover; background-position: center; color: #fff;
+  }
+  .values-inner { max-width: 1280px; margin: 0 auto; }
+  .values-header { text-align: center; margin-bottom: 4rem; }
+  .values-header h2 {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(2.2rem, 4vw, 3.5rem); margin-bottom: 1rem;
+  }
+  .values-header p { color: rgba(255,255,255,.75); font-size: 1.05rem; }
+  .values-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .value-item { display: flex; gap: 1.5rem; align-items: flex-start; }
+  .value-icon {
+    width: 64px; height: 64px; background: var(--accent); border-radius: 18px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-size: 1.6rem;
+  }
+  .value-item h3 { font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.3rem; margin-bottom: .75rem; }
+  .value-item p { color: rgba(255,255,255,.7); line-height: 1.7; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #fff; border-top: 8px solid var(--accent);
+    padding: 4rem 2rem 2rem;
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; gap: 4rem; flex-wrap: wrap;
+  }
+  .footer-brand { max-width: 280px; }
+  .footer-logo { height: 80px; width: auto; object-fit: contain; }
+  .footer-quote { color: var(--on-surface-variant); font-style: italic; font-size: 1rem; line-height: 1.7; margin: 1.25rem 0; }
+  .footer-socials { display: flex; gap: .75rem; }
+  .social-btn {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: var(--surface-container); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s; box-shadow: 0 2px 8px rgba(0,0,0,.07); border: none; cursor: pointer;
+  }
+  .social-btn:hover { background: var(--primary); color: #fff; }
+  .footer-links { flex: 1; display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+  .footer-col h5 {
+    font-family: 'Comfortaa', cursive; font-weight: 700; font-size: 1rem;
+    color: var(--primary); margin-bottom: 1rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: .6rem; }
+  .footer-col ul li a { color: var(--on-surface-variant); text-decoration: none; font-size: .9rem; font-weight: 500; transition: color .2s; }
+  .footer-col ul li a:hover { color: var(--secondary); }
+  .footer-bottom {
+    max-width: 1280px; margin: 2.5rem auto 0;
+    border-top: 1px solid rgba(220,193,181,.35); padding-top: 1.5rem;
+    text-align: center; color: var(--on-surface-variant); font-size: .85rem; font-weight: 600;
+  }
+
+  /* ── REVEAL ANIMATIONS ── */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity .7s ease, transform .7s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: .1s; }
+  .reveal-delay-2 { transition-delay: .2s; }
+  .reveal-delay-3 { transition-delay: .3s; }
+  .reveal-delay-4 { transition-delay: .4s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    .cards-grid, .eco-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .intro-inner { flex-direction: column; }
+    .hero-image-wrap { order: -1; }
+  }
+  @media (max-width: 768px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+    .eco-grid { grid-template-columns: repeat(2, 1fr); }
+    .values-grid { grid-template-columns: 1fr; }
+    .footer-links { grid-template-columns: 1fr; }
+    .hero-cta { flex-direction: column; }
+  }
+  @media (max-width: 500px) {
+    .cards-grid, .eco-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body id="top">
+
+<!-- HEADER -->
+<header>
+  <nav>
+    <a href="#" class="logo">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRTJnjYObsZE9jsI8MJQabGl48mXkq7vDmblnlBtwYNLBRgXAI3-Qmm1LuJsB22TnjfHkXbbOtElj4kGHcrHihoeT5LQa9T89zr7aarvV_bs7wPZDhSyrKovHaELJn2KdU6bBNCMxA12bxEBRErdRg7m-KddiXVRvxttz4E77r_nPV7iUAZS2onDOzwuUm6hNCGZcBEJagIjSpUD20vmv_GWUb9EHeTYkKyFGbikZn2NmIPUMCac8v1EiC6pmC95Nj3B8vDWQYyKyK" alt="Chóp Nón Logo">
+      Chóp Nón
+    </a>
+    <div class="nav-links">
+      <a href="#top" class="active">Trang chủ</a>
+      <a href="#intro">Về chúng mình</a>
+      <a href="chopnon-collection.html">Blindboxes</a>
+      <a href="#ecosystem">Chóp Nón Shop</a>
+    </div>
+    <div class="nav-actions">
+      <a href="chopnon-cart.html" class="nav-btn" title="Giỏ hàng">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cart-count">0</span>
+      </a>
+      <button class="nav-btn" title="Tài khoản">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-blob-1"></div>
+    <div class="hero-blob-2"></div>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge reveal">✨ BST ĐẦU TIÊN</div>
+        <h1 class="hero-title reveal reveal-delay-1">
+          Khám Phá<br>Hành Trình<br><span class="noni-word">NONI</span>
+        </h1>
+        <p class="hero-subtitle reveal reveal-delay-2">Từ làng nón Chuông đến những nét đẹp văn hóa Việt Nam</p>
+        <div class="hero-text reveal reveal-delay-2">
+          <p>Sinh ra từ tình yêu dành cho nghề làm nón truyền thống, Noni bắt đầu hành trình khám phá khắp đất nước để tìm lời giải cho câu hỏi:</p>
+          <p class="hero-quote">Điều gì đã khiến chiếc nón lá bình dị được gìn giữ qua bao thế hệ?</p>
+          <p>Mỗi phiên bản Noni là một câu chuyện, một giá trị văn hóa và một lát cắt của bản sắc Việt đang chờ được khám phá.</p>
+        </div>
+        <div class="hero-cta reveal reveal-delay-3">
+          <a href="chopnon-collection.html" class="btn-primary">Mở hộp cùng Noni</a>
+          <a href="chopnon-collection.html" class="btn-outline">Xem Bộ Sưu Tập</a>
+        </div>
+      </div>
+
+      <div class="hero-image-wrap reveal reveal-delay-2">
+        <div class="hero-float-blob"></div>
+        <div class="hero-img-frame">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAvQ-_CfJqfPyPcoti7Ryapp_FSU51KcvxmvIcN8ZvywB-VgNvA3h4MjhaQoS_UOXJM1Iyr9fUsbpdQn35itIxoXPRaglZOQWSD6X_bi1jyJr5zTypoMvgpqRRPTutcn4UAzEX_lzYfsqPfXTUHbSU83KaH0eQMgaZSAlvQQQ8kI-nUpJGS7D_x33K5odSre-V_Ds5AQH4KlFxpD_bnNWu6d1q35xzBiye_wcaNtatidHgg8JMKrs0OHBbih3lY-PV2hGDWXT6sYOE" alt="NONI Packaging">
+        </div>
+        <div class="hero-tag">#TheNoniBlindbox</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section intro" id="intro">
+    <div class="intro-inner">
+      <div class="intro-text reveal">
+        <h2 class="section-title">Về Chóp Nón</h2>
+        <div class="intro-body">
+          <p>Chóp Nón là một dự án sản phẩm văn hóa sáng tạo lấy cảm hứng từ nón lá Việt Nam – biểu tượng gắn liền với đời sống, văn hóa và bản sắc dân tộc.</p>
+          <p>Dự án hướng đến mục tiêu bảo tồn và lan tỏa giá trị của nghề làm nón lá truyền thống bằng cách chuyển hóa các yếu tố văn hóa quen thuộc thành những sản phẩm hiện đại, gần gũi và phù hợp hơn với thế hệ trẻ.</p>
+          <blockquote class="intro-blockquote">
+            "Thay vì chỉ nhìn nhận nón lá như một sản phẩm thủ công truyền thống hay một món quà lưu niệm, Chóp Nón tái hiện biểu tượng văn hóa này thông qua những thiết kế sáng tạo, trẻ trung và giàu tính tương tác."
+          </blockquote>
+        </div>
+      </div>
+      <div class="intro-image reveal reveal-delay-2" style="min-height:420px;">
+        <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBj9QqHq4gEIpx1aV-jEVr2g8-elb80guv9pGgv8U738JMYcdX3WBtvZ-Mnm3DrVRTomlZCQb2cA-ePY5z7ZQi6wYmyZEqH_QkGbrqvisC5OScPbWvj1GgFmeC9LvL1SwbnuOXATpIKBAk_aZwyasvJbJ6-OWHkQfSZ_tYwMgrOmUP8UkVtlRFeaJZqjQSIUTD3DxUrzNg61LVy2aEBJofjc4fpAZoOI9bSpRBx9u8OD7wNjpWirB95HChXM3uHqhQGb6LrbpTdNbI-" alt="Noni Story" style="height:100%;min-height:420px;">
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTION -->
+  <section class="section collection" id="collection">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <h2 class="section-title" style="text-align:center;">The NONI Collection</h2>
+        <p>Mỗi phiên bản Noni là hiện diện của một vùng đất, một biểu tượng tự hào của dải đất hình chữ S.</p>
+      </div>
+      <div class="cards-grid">
+        <div class="noni-card reveal reveal-delay-1">
+          <div class="noni-card-img">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgBrK5fgwu5kZkFJBB_BUFsup48IqPr6za-rfMSikKC9D6rK2xrEgiYUgmMsT9gRpQzWgJlo-ZTqcGMxJnPS_QHoSe5sGF8qVbfsneSvfJOb1qnzqpYbzXqIAm-Wm2VfYL08K6kS6HFjuJ0SJlz462yonhC7R0fa_5BDNa4JYEosaOFSByDRHoN8KJYH3OHWaDob2vTqJg-aLWj4HwaPV7Kb7BJfmKXSkXDhtitPOBXST9EhAb2LhGBBQF5BG9gj7AERX4C0jvQTYT" alt="Sắc Cờ">
+          </div>
+          <h3>Sắc Cờ</h3>
+        </div>
+        <div class="noni-card reveal reveal-delay-2">
+          <div class="noni-card-img">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu6GR4HjH9dPBDXVYYdJEAh_PQFXSUc_iUdSKkmfOMHRiJYdGW5JKYRDzzovnaSs0cB1LY2U2mnc9phlm1-0RtNTE8SZBxg2BKR-CoXdMIyV9UbMsLsimgBi_7GrZebStw7pAzjrixWOi6pTe7DR_De4rmVnrox2TxX-6HpmciuuGsp0dnXULmh0UcgFoMPtYhj2SoEe_s5js1IgRV1zU4ptvqKpiE45qAgmMKIaGc-NU8dOQO1XNtlJaGySr9DGwP_KZXzTAa1UGL" alt="Non Nước">
+          </div>
+          <h3>Non Nước</h3>
+        </div>
+        <div class="noni-card reveal reveal-delay-3">
+          <div class="noni-card-img">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSZSdZcpkWblM8Lu8z6jB8Gn4JaWiloJbyNOSFCQSWRV9RSeU2hXmmO3FQjgbqqao6q04vPlxZqYwBsU8Vu7ePjQQyOH7WU4Tdp-8VybaLcFZ8bkPvAQw7fXfKWX-TF1pFKA3lOAeeDriIUc3Gj65d0MqsRE6jaguEF7u-CkP0coWzGGoEvFEDV0FbXt48RgqwPTPfYQzAS5-LxLjBblXC3Wi-2Lmq2n5q2GejJeq8CfYGJ_THRtxO5uURHPEKUYjZasXhkhxbbgNZ" alt="Trời Đất">
+          </div>
+          <h3>Trời Đất</h3>
+        </div>
+        <div class="noni-card reveal reveal-delay-4">
+          <div class="noni-card-img">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGC_wqeKghTD4p5XhczIWoiZuAWYMu0KLqF6hiWP1kZWlWwFMFuNWbFfGq6Y1wblH5Tj6otBSlmHBHfCHL3vqLnNKi391SFJb08Jj_QeTt9Z2k879syV0AvTgJr7NrgLFgx_3FIAlZ6cUnfXvNBmb8oN_so_UJt9fRHCk1aeTw2EPYHbmSyO1UdmmZxdUwdClJ2BlBJJbaxhWkrMy9XRMR9BStvRkJgv7Q0N7bvnAmuQiiVVaDoFKCY6nOpFxc_B9ufmWexwj6cg6r" alt="Sơn Cước">
+          </div>
+          <h3>Sơn Cước</h3>
+        </div>
+      </div>
+      <div class="collection-cta reveal">
+        <a href="chopnon-collection.html" class="btn-cta">
+          Xem chi tiết bộ sưu tập
+          <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSYSTEM -->
+  <section class="section ecosystem" id="ecosystem">
+    <div class="section-inner">
+      <div class="section-header reveal">
+        <h2 class="section-title" style="text-align:center;">Hệ Sinh Thái Chóp Nón</h2>
+        <p>Những người bạn phụ kiện xinh xắn, tiếp tục tận dụng một phần nguyên liệu nón lá dư thừa như một cách thể hiện cam kết đối với tính bền vững và sự trân trọng dành cho nghề thủ công truyền thống.</p>
+      </div>
+      <div class="eco-grid">
+        <div class="eco-card reveal reveal-delay-1">
+          <div class="eco-img-wrap">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuoMzh1oaaOTI5GIbyr6PMArXafbwJcGCbdiZVz35QQqn0juHdxY0puNrVYSD5r4GYGA2CfVokEObT5LNV-tCL87mcyMimzJkvCiK1KVp_RCr66nhJfN4MIRnWaJ_p392iUT3THTcvc5I10iuw90p5cUuvlpNMwxNJRoqZMsQbNkDR0XON1eXdI9TW44J2Kq1MPGgffecmRwG4-QNVqB9I22GoKWYuXC9AlzilkBQTvgmZjANw1TX97jjtW-JiASLF0RSnI7cl5wBl" alt="Chóp Coaster">
+            <button class="cart-btn" title="Thêm vào giỏ" onclick="addProductToCart('chop-coaster')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+          <h4>Chóp Coaster</h4>
+          <p class="eco-desc">Lót ly đan thủ công đầy tinh tế.</p>
+          <div class="eco-bottom">
+            <span class="eco-price">25.000đ</span>
+            <button class="add-btn" onclick="addProductToCart('chop-coaster')">Thêm vào giỏ</button>
+          </div>
+        </div>
+        <div class="eco-card reveal reveal-delay-2">
+          <div class="eco-img-wrap">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfgsWnNjmXNoK3YSSIxpC5EYH8Fz6AwdemEB30TNINNeK5NxVyaTBmdGDVo6IjUQSRtW5iEI4htLQVmYjQ98-Uu3luLB9SB5zLjqYvvW81pDz-VySZ-uHOj8qMUHwSBFIVrz3DUP9Pkue7xYDIhwjrHPNR8VPh0svk16AS67LAyvOaepQYxWyWxGEwF__5unlxc-Fi3Ew4BO6x2lpcVUUHF1C5_BVphm7xe1HtX3YIGYsrDiv62GVjBWos4b7biM5hWihxJJ7hpKhF" alt="Chóp Buddy">
+            <button class="cart-btn" title="Thêm vào giỏ" onclick="addProductToCart('chop-buddy')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+          <h4>Chóp Buddy</h4>
+          <p class="eco-desc">Móc khóa nón mini truyền thống.</p>
+          <div class="eco-bottom">
+            <span class="eco-price">25.000đ</span>
+            <button class="add-btn" onclick="addProductToCart('chop-buddy')">Thêm vào giỏ</button>
+          </div>
+        </div>
+        <div class="eco-card reveal reveal-delay-3">
+          <div class="eco-img-wrap">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPnmKjYzfTRyf2f14c6CTmdBIAUnJkO_uE_pmWbA1GhMJVuf8Myr84HE283KjxiPLdhxOlOPhZSh49nZQ05T2DumLTrg7ei7-Qep4KINcHRsBIPKsf_R4e0Z1of3TTGllDt6cNgxboX2XkL-2Z4wli0Ee7gu9zrIc_b8Y-XxNwsrMLvDQT5KZReW-42GRe86ptbSZA6jWo1uZNW2O7jCrEuO9zmSedT-relBAnBeel8MvKDJ7gGzC3saF46nO0Sjt7GezcF0NTW8yv" alt="Chóp Bloom">
+            <button class="cart-btn" title="Thêm vào giỏ" onclick="addProductToCart('chop-bloom')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+          <h4>Chóp Bloom</h4>
+          <p class="eco-desc">Dây nón nghệ thuật từ vật liệu dư thừa.</p>
+          <div class="eco-bottom">
+            <span class="eco-price">70.000đ</span>
+            <button class="add-btn" onclick="addProductToCart('chop-bloom')">Thêm vào giỏ</button>
+          </div>
+        </div>
+        <div class="eco-card reveal reveal-delay-4">
+          <div class="eco-img-wrap">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcI5H8-mdNEp7WmZ9wjH5gEUT5qIRv4o3hBfwXVX3Oh3Q5j7tGEMlP37r536Eq0bK0aJ0A08ZH3XXsx-kwJyGHFN7qCOFc0GJAAZSsn0zhxEQEzU2yD4QDHrqHmVH_SK6_3grtzHRLTajILMS2-W3r5JyVIm3KgvZxaNwCXr-YQ_VWnF3YPL4Yhlyy0BqhDiC9vyh7fu0a2ucwyyra698YuEB2A1E-qegCTnlP7mnd5u4h_i-baXoyj7e2S1V3G_N4zlOpkh-RntJZ" alt="Chóp Star">
+            <button class="cart-btn" title="Thêm vào giỏ" onclick="addProductToCart('chop-star')">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+            </button>
+          </div>
+          <h4>Chóp Star</h4>
+          <p class="eco-desc">Bông tai thủ công hình ngôi sao độc đáo.</p>
+          <div class="eco-bottom">
+            <span class="eco-price">40.000đ</span>
+            <button class="add-btn" onclick="addProductToCart('chop-star')">Thêm vào giỏ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section class="values">
+    <div class="values-inner">
+      <div class="values-header reveal">
+        <h2>Giá Trị Cốt Lõi</h2>
+        <p>Chúng mình không chỉ làm ra sản phẩm, chúng mình tạo ra sự kết nối.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-item reveal reveal-delay-1">
+          <div class="value-icon">♻️</div>
+          <div>
+            <h3>Sống Xanh & Bền Vững</h3>
+            <p>Chóp Nón cam kết sử dụng tối đa các vật liệu dư thừa từ quá trình sản xuất nón lá để tạo ra các phụ kiện xinh xắn, giảm thiểu rác thải ra môi trường.</p>
+          </div>
+        </div>
+        <div class="value-item reveal reveal-delay-2">
+          <div class="value-icon">🤝</div>
+          <div>
+            <h3>Kết Nối Văn Hóa</h3>
+            <p>Chúng mình tạo ra cầu nối giữa nghệ nhân làng nghề và thị trường hiện đại, giúp văn hóa truyền thống được lan tỏa và tiếp nối trong nhịp sống trẻ.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJmkWRJLTDXGXUeq5x5fbDplgJXgq4bfrh7wqPm4V83vi6Gl7WS2HMRNDM5aIgxWEyNjw8clMwXLBvjf4BVX_w6bjJxmC9VuvUpObdGY5RK8_AKC2TEvXKhI8CiahEEx6M5BQyOhgG38SkcudgjN-XdHfx6Y3zswsNdI6U01mj5KjGKUbqFcvxwQrDKQnhSr_N8L8Utxm4_OdSgu8SNBISy2q7txKb2adUMWJpsQJkRmp4plrdyoHIzLr0o43aj5DhHnbMAA1viN5f" alt="Chóp Nón" class="footer-logo">
+      <p class="footer-quote">"Chóp Nón không chỉ là sản phẩm, đó là một hành trình cảm xúc và di sản."</p>
+      <div class="footer-socials">
+        <button class="social-btn" title="Facebook">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c5.05-.5 9-4.76 9-9.95z"/></svg>
+        </button>
+        <button class="social-btn" title="TikTok">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.59-1.01V14.5c.03 2.02-.71 4.07-2.13 5.53-1.42 1.46-3.47 2.14-5.48 1.96-2.02-.18-3.96-1.35-4.99-3.1-.96-1.63-1.03-3.66-.4-5.4.63-1.74 2.1-3.13 3.84-3.65 1.06-.31 2.19-.28 3.25.1v4.11c-.55-.26-1.18-.36-1.79-.27-.61.09-1.18.42-1.54.91-.36.49-.51 1.12-.41 1.72.1.6.45 1.14.95 1.48.51.34 1.15.42 1.73.31.6-.11 1.12-.51 1.41-1.04.22-.4.32-.86.32-1.32V0h.4h.61z"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h5>Sản phẩm</h5>
+        <ul>
+          <li><a href="chopnon-collection.html">Blindbox</a></li>
+          <li><a href="#ecosystem">Hệ sinh thái Chóp Nón</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Liên hệ</h5>
+        <ul>
+          <li><a href="#">Fanpage Facebook</a></li>
+          <li><a href="#">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 Chóp Nón — Tất cả quyền được bảo lưu.</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Trigger hero elements immediately
+  setTimeout(() => {
+    document.querySelectorAll('.hero .reveal').forEach(el => el.classList.add('visible'));
+  }, 100);
+
+  // Active nav link on scroll
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(a => {
+      a.classList.remove('active');
+      if (a.getAttribute('href') === '#' + current || (current === '' && a.getAttribute('href') === '#')) a.classList.add('active');
+    });
+  });
+
+
+  // ── Cart storage for all pages ──
+  const CART_KEY = 'chopnon_cart';
+  const PRODUCTS = {
+    'chop-coaster': {
+      id: 'chop-coaster',
+      name: 'Chóp Coaster',
+      price: 25000,
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAuoMzh1oaaOTI5GIbyr6PMArXafbwJcGCbdiZVz35QQqn0juHdxY0puNrVYSD5r4GYGA2CfVokEObT5LNV-tCL87mcyMimzJkvCiK1KVp_RCr66nhJfN4MIRnWaJ_p392iUT3THTcvc5I10iuw90p5cUuvlpNMwxNJRoqZMsQbNkDR0XON1eXdI9TW44J2Kq1MPGgffecmRwG4-QNVqB9I22GoKWYuXC9AlzilkBQTvgmZjANw1TX97jjtW-JiASLF0RSnI7cl5wBl'
+    },
+    'chop-buddy': {
+      id: 'chop-buddy',
+      name: 'Chóp Buddy',
+      price: 25000,
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfgsWnNjmXNoK3YSSIxpC5EYH8Fz6AwdemEB30TNINNeK5NxVyaTBmdGDVo6IjUQSRtW5iEI4htLQVmYjQ98-Uu3luLB9SB5zLjqYvvW81pDz-VySZ-uHOj8qMUHwSBFIVrz3DUP9Pkue7xYDIhwjrHPNR8VPh0svk16AS67LAyvOaepQYxWyWxGEwF__5unlxc-Fi3Ew4BO6x2lpcVUUHF1C5_BVphm7xe1HtX3YIGYsrDiv62GVjBWos4b7biM5hWihxJJ7hpKhF'
+    },
+    'chop-bloom': {
+      id: 'chop-bloom',
+      name: 'Chóp Bloom',
+      price: 70000,
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPnmKjYzfTRyf2f14c6CTmdBIAUnJkO_uE_pmWbA1GhMJVuf8Myr84HE283KjxiPLdhxOlOPhZSh49nZQ05T2DumLTrg7ei7-Qep4KINcHRsBIPKsf_R4e0Z1of3TTGllDt6cNgxboX2XkL-2Z4wli0Ee7gu9zrIc_b8Y-XxNwsrMLvDQT5KZReW-42GRe86ptbSZA6jWo1uZNW2O7jCrEuO9zmSedT-relBAnBeel8MvKDJ7gGzC3saF46nO0Sjt7GezcF0NTW8yv'
+    },
+    'chop-star': {
+      id: 'chop-star',
+      name: 'Chóp Star',
+      price: 40000,
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAcI5H8-mdNEp7WmZ9wjH5gEUT5qIRv4o3hBfwXVX3Oh3Q5j7tGEMlP37r536Eq0bK0aJ0A08ZH3XXsx-kwJyGHFN7qCOFc0GJAAZSsn0zhxEQEzU2yD4QDHrqHmVH_SK6_3grtzHRLTajILMS2-W3r5JyVIm3KgvZxaNwCXr-YQ_VWnF3YPL4Yhlyy0BqhDiC9vyh7fu0a2ucwyyra698YuEB2A1E-qegCTnlP7mnd5u4h_i-baXoyj7e2S1V3G_N4zlOpkh-RntJZ'
+    }
+  };
+
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    updateCartCount();
+  }
+
+  function updateCartCount() {
+    const count = getCart().reduce((sum, item) => sum + (item.qty || 0), 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = count;
+      el.classList.toggle('show', count > 0);
+    });
+  }
+
+  function addProductToCart(productId) {
+    const product = PRODUCTS[productId];
+    if (!product) return;
+
+    const cart = getCart();
+    const existing = cart.find(item => item.id === product.id);
+
+    if (existing) existing.qty += 1;
+    else cart.push({ ...product, qty: 1 });
+
+    saveCart(cart);
+    alert(`Đã thêm "${product.name}" vào giỏ hàng!`);
+  }
+
+  updateCartCount();
+  window.addEventListener('storage', updateCartCount);
+
+</script>
+</body>
+</html>

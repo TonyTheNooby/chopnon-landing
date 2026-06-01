@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Giỏ Hàng – Chóp Nón</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #984307;
+    --primary-dark: #6b2e04;
+    --secondary: #934b10;
+    --accent: #f9d423;
+    --accent-light: #fff3b0;
+    --surface: #fff8f0;
+    --surface-container: #fdedc7;
+    --surface-low: #fff2d8;
+    --surface-high: #f7e7c1;
+    --surface-highest: #f1e1bc;
+    --surface-lowest: #ffffff;
+    --on-surface: #221b04;
+    --on-surface-variant: #554339;
+    --outline: #897268;
+    --outline-variant: #dcc1b5;
+    --inverse-surface: #383016;
+    --error: #ba1a1a;
+    --white: #ffffff;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--surface);
+    color: var(--on-surface);
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: sticky; top: 0; width: 100%; z-index: 100;
+    background: rgba(255,248,240,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(220,193,181,0.3);
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1280px; margin: 0 auto; padding: .85rem 2rem;
+  }
+  .logo {
+    font-family: 'Comfortaa', cursive; font-weight: 700; font-size: 1.4rem;
+    color: var(--primary); text-decoration: none;
+  }
+  .nav-actions { display: flex; gap: .5rem; }
+  .nav-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
+    background: transparent; color: var(--on-surface-variant);
+    display: flex; align-items: center; justify-content: center; transition: background .2s;
+    position: relative; text-decoration: none;
+  }
+  .nav-btn:hover { background: var(--surface-high); }
+  .back-btn {
+    display: flex; align-items: center; gap: .5rem;
+    font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: .9rem;
+    color: var(--on-surface-variant); text-decoration: none; padding: .5rem 1rem;
+    border-radius: 99px; transition: all .2s;
+  }
+  .back-btn:hover { background: var(--surface-container); color: var(--primary); }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    flex: 1;
+    max-width: 1280px; margin: 0 auto; width: 100%;
+    padding: 3rem 2rem 5rem;
+  }
+  .page-title {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(2rem, 4vw, 3rem); color: var(--primary);
+    letter-spacing: -1px; margin-bottom: 2.5rem;
+  }
+
+  .cart-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  @media(min-width: 1024px) {
+    .cart-layout { grid-template-columns: 1fr 380px; gap: 3rem; }
+  }
+
+  /* ── CART ITEMS ── */
+  .cart-items { display: flex; flex-direction: column; gap: 1.25rem; }
+
+  .cart-item {
+    background: var(--surface-lowest);
+    border: 1px solid var(--outline-variant);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    display: flex; align-items: center; gap: 1.25rem;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .cart-item:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(152,67,7,.08); }
+
+  .item-img {
+    width: 88px; height: 88px; border-radius: 1rem;
+    overflow: hidden; flex-shrink: 0;
+    background: var(--surface-container);
+  }
+  .item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .item-info { flex: 1; min-width: 0; }
+  .item-name {
+    font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: 1rem; color: var(--on-surface); margin-bottom: .3rem;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .item-unit-price {
+    font-size: .82rem; color: var(--on-surface-variant);
+  }
+  .item-unit-price span { font-weight: 600; color: var(--primary); }
+
+  .item-right {
+    display: flex; flex-direction: column; align-items: flex-end; gap: .75rem;
+    flex-shrink: 0;
+  }
+  .item-subtotal {
+    font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: 1.05rem; color: var(--secondary);
+  }
+
+  .qty-ctrl {
+    display: flex; align-items: center;
+    background: var(--surface-container);
+    border-radius: 99px; overflow: hidden;
+  }
+  .qty-ctrl button {
+    width: 34px; height: 34px; border: none; cursor: pointer;
+    background: transparent; color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; font-weight: 700;
+    transition: background .15s;
+  }
+  .qty-ctrl button:hover { background: rgba(152,67,7,.1); }
+  .qty-ctrl span {
+    min-width: 36px; text-align: center;
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: .95rem;
+  }
+
+  .delete-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--error); font-size: .8rem;
+    font-family: 'Quicksand', sans-serif; font-weight: 600;
+    display: flex; align-items: center; gap: .3rem;
+    padding: .2rem .5rem; border-radius: .5rem;
+    transition: background .15s;
+  }
+  .delete-btn:hover { background: rgba(186,26,26,.07); }
+  .delete-btn svg { stroke: var(--error); }
+
+  /* ── EMPTY STATE ── */
+  .empty-state {
+    text-align: center; padding: 5rem 2rem;
+    display: none;
+    flex-direction: column; align-items: center; gap: 1.5rem;
+  }
+  .empty-state.show { display: flex; }
+  .empty-icon {
+    width: 80px; height: 80px; border-radius: 50%;
+    background: var(--surface-container);
+    display: flex; align-items: center; justify-content: center; font-size: 2rem;
+  }
+  .empty-state h3 {
+    font-family: 'Comfortaa', cursive; font-weight: 700; font-size: 1.5rem; color: var(--primary);
+  }
+  .empty-state p { color: var(--on-surface-variant); font-size: .95rem; }
+  .btn-shop {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .75rem 2rem; background: var(--primary); color: #fff;
+    border-radius: 99px; font-family: 'Quicksand', sans-serif;
+    font-weight: 700; font-size: 1rem; text-decoration: none;
+    box-shadow: 0 6px 20px rgba(152,67,7,.3); transition: transform .2s, box-shadow .2s;
+  }
+  .btn-shop:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(152,67,7,.4); }
+
+  /* ── ORDER SUMMARY ── */
+  .order-summary {
+    background: var(--surface-high);
+    border: 1px solid var(--outline-variant);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    position: sticky; top: 80px;
+    align-self: start;
+  }
+  .summary-title {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: 1.3rem; color: var(--on-surface); margin-bottom: 1.5rem;
+  }
+  .summary-row {
+    display: flex; justify-content: space-between;
+    font-size: .9rem; color: var(--on-surface-variant);
+    margin-bottom: .75rem;
+  }
+  .summary-row.total {
+    margin-top: 1.25rem; padding-top: 1.25rem;
+    border-top: 1px solid var(--outline-variant);
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: 1.2rem; color: var(--on-surface);
+  }
+  .summary-row.total .total-val { color: var(--primary); font-size: 1.4rem; }
+
+  .voucher-row {
+    margin: 1.25rem 0;
+    display: flex; gap: .6rem;
+  }
+  .voucher-row input {
+    flex: 1; border: 1.5px solid var(--outline-variant);
+    border-radius: .75rem; padding: .6rem 1rem;
+    font-family: 'Plus Jakarta Sans', sans-serif; font-size: .88rem;
+    background: var(--surface-lowest); color: var(--on-surface);
+    outline: none; transition: border-color .2s;
+  }
+  .voucher-row input:focus { border-color: var(--primary); }
+  .voucher-row button {
+    padding: .6rem 1rem; background: var(--secondary); color: #fff;
+    border: none; border-radius: .75rem; cursor: pointer;
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: .85rem;
+    transition: background .2s;
+  }
+  .voucher-row button:hover { background: var(--primary-dark); }
+
+  .btn-checkout {
+    width: 100%; padding: 1rem;
+    background: var(--primary); color: #fff; border: none; cursor: pointer;
+    border-radius: 1rem; font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: 1.05rem; box-shadow: 0 6px 20px rgba(152,67,7,.3);
+    transition: transform .2s, box-shadow .2s;
+    margin-top: 1rem;
+  }
+  .btn-checkout:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(152,67,7,.4); }
+  .btn-checkout:disabled { opacity: .5; cursor: not-allowed; }
+  .vat-note { text-align: right; font-size: .78rem; color: var(--on-surface-variant); margin-top: .5rem; }
+
+  /* ── RECOMMENDATIONS ── */
+  .reco-section { margin-top: 4rem; }
+  .reco-title {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: 1.5rem; color: var(--on-surface); margin-bottom: 1.5rem;
+  }
+  .reco-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.25rem;
+  }
+  @media(min-width: 768px) { .reco-grid { grid-template-columns: repeat(4, 1fr); } }
+  .reco-card {
+    cursor: pointer;
+  }
+  .reco-img {
+    aspect-ratio: 4/5; border-radius: 1rem; overflow: hidden;
+    position: relative; background: var(--surface-container); margin-bottom: .75rem;
+  }
+  .reco-img img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; display: block; }
+  .reco-card:hover .reco-img img { transform: scale(1.08); }
+  .reco-add-btn {
+    position: absolute; bottom: .6rem; right: .6rem;
+    background: rgba(255,255,255,.9); border: none; cursor: pointer;
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,.12);
+    opacity: 0; transition: opacity .2s, background .2s;
+  }
+  .reco-card:hover .reco-add-btn { opacity: 1; }
+  .reco-add-btn:hover { background: var(--primary); color: #fff; }
+  .reco-name {
+    font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: .9rem; color: var(--on-surface); margin-bottom: .2rem;
+  }
+  .reco-price { font-weight: 700; font-size: .95rem; color: var(--primary); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface-low);
+    border-top: 1px solid var(--outline-variant);
+    padding: 3rem 2rem;
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  }
+  .footer-brand {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: 1.3rem; color: var(--secondary); margin-bottom: .75rem;
+  }
+  .footer-desc { font-size: .88rem; color: var(--on-surface-variant); line-height: 1.7; max-width: 300px; }
+  .footer-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  .footer-col h5 {
+    font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: .8rem; text-transform: uppercase; letter-spacing: .1em;
+    color: var(--secondary); margin-bottom: .75rem;
+  }
+  .footer-col a {
+    display: block; font-size: .85rem; color: var(--on-surface-variant);
+    text-decoration: none; margin-bottom: .5rem; transition: color .2s;
+  }
+  .footer-col a:hover { color: var(--primary); }
+  .footer-bottom {
+    max-width: 1280px; margin: 2rem auto 0;
+    padding-top: 1.5rem; border-top: 1px solid rgba(220,193,181,.3);
+    font-size: .82rem; color: var(--on-surface-variant);
+  }
+
+  /* ── TOAST ── */
+  .cart-toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--inverse-surface); color: #fff;
+    padding: .75rem 1.5rem; border-radius: 99px;
+    font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: .9rem;
+    display: flex; align-items: center; gap: .6rem;
+    box-shadow: 0 8px 32px rgba(0,0,0,.25); z-index: 9999;
+    opacity: 0; transition: opacity .3s, transform .3s; pointer-events: none;
+  }
+  .cart-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .cart-toast svg { stroke: var(--accent); }
+
+  /* remove animation for cart-item */
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .cart-item { animation: slideIn .3s ease both; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="javascript:history.back()" class="back-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+      Tiếp tục mua sắm
+    </a>
+    <a href="chopnon-landing.html" class="logo">Chóp Nón</a>
+    <div class="nav-actions">
+      <button class="nav-btn" title="Tài khoản">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<div class="cart-toast" id="cart-toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toast-msg"></span>
+</div>
+
+<main>
+  <h1 class="page-title">Giỏ hàng của bạn</h1>
+
+  <div class="cart-layout">
+    <!-- LEFT: Items -->
+    <div>
+      <div class="cart-items" id="cart-items"></div>
+
+      <!-- Empty state -->
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">🛒</div>
+        <h3>Giỏ hàng đang trống</h3>
+        <p>Hãy khám phá bộ sưu tập Noni và thêm sản phẩm vào giỏ nhé!</p>
+        <a href="chopnon-collection.html#shopping-section" class="btn-shop">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+          Khám phá sản phẩm
+        </a>
+      </div>
+
+      <!-- Recommendations -->
+      <div class="reco-section" id="reco-section" style="display:none;">
+        <h2 class="reco-title">Bạn có thể thích</h2>
+        <div class="reco-grid" id="reco-grid"></div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Summary -->
+    <div>
+      <div class="order-summary" id="order-summary" style="display:none;">
+        <h2 class="summary-title">Tóm tắt đơn hàng</h2>
+        <div class="summary-row">
+          <span>Tạm tính (<span id="item-count">0</span> sản phẩm)</span>
+          <span id="subtotal-val">0₫</span>
+        </div>
+        <div class="summary-row">
+          <span>Phí vận chuyển</span>
+          <span id="shipping-val">30.000₫</span>
+        </div>
+        <div class="voucher-row">
+          <input type="text" placeholder="Nhập mã voucher" id="voucher-input">
+          <button onclick="applyVoucher()">Áp dụng</button>
+        </div>
+        <div class="summary-row" id="discount-row" style="display:none;">
+          <span>Giảm giá</span>
+          <span id="discount-val" style="color:var(--error);">0₫</span>
+        </div>
+        <div class="summary-row total">
+          <span>Tổng cộng</span>
+          <span class="total-val" id="total-val">0₫</span>
+        </div>
+        <p class="vat-note">(Đã bao gồm VAT)</p>
+        <button class="btn-checkout" id="checkout-btn" onclick="checkout()">Đặt Hàng →</button>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Chóp Nón</div>
+      <p class="footer-desc">Bảo tồn và lan tỏa giá trị văn hóa nón lá qua sản phẩm sáng tạo, gần gũi với thế hệ trẻ.</p>
+    </div>
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h5>Thông tin</h5>
+        <a href="chopnon-landing.html">Trang chủ</a>
+        <a href="chopnon-collection.html">The NONI Collection</a>
+      </div>
+      <div class="footer-col">
+        <h5>Liên hệ</h5>
+        <a href="#">ChopnonmanghonnonViet@gmail.com</a>
+        <a href="#">0947937980</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2025 Chóp Nón — Crafted with cultural pride.</div>
+</footer>
+
+<script>
+  const CART_KEY = 'chopnon_cart';
+  const SHIPPING = 30000;
+
+  // Product catalog for recommendations
+  const ALL_PRODUCTS = [
+    { id: 'noni-single', name: 'Noni Blindbox - Lẻ 1 hộp', price: 299000, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5z_uQSVT62Y0iIoer2zl9GARhGPRcoHQQ-G_tFPaeqcY6vGd2RVkxgSxB_WjNnsq-4dPJHea0TAMa2JrxUmR6vv4dI3h-tlGkiCG75lWF9xszzs22k0mOQATOf3W6762NfAFjektOt4XugOcD0A7UAtTmStkfAat4DFbUAb1kJ9U-5Oao3USaqdFna3oAGv2kyZDn3tQNfVAklZhzFHMPWM4hs1i5147eYMalSstCgNNaw65FMmeH9r-iNfQIfBSQ0LsSSTTmHf1z' },
+    { id: 'noni-fullset', name: 'Noni Blindbox - Nguyên Bộ (4 Hộp)', price: 1149000, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBH6RQmKYXc6Y9tqpoeBmRhVcDGa9isoiT9D_eRWRE7_Z1sZ7_XAm2gGxtRGfrCpC5AcN6QwOW7UWT-hIL33wCIaeD83-lFkDfU8IfoCFIpXUl3TyKmg7fnJ5sloErmvObPrk6bqHQnsZbecUewZugCSnNAtUe2R5MAbrtA0A9sZmb1vKgwRmv-qXDRvtoxJbdTvw073NZXyGJIYSe6sy_VW-SkEQrNH1ormBEow2TJhWFBijiBG4KzI2wf28-XUBU94lN47PnxB-X0' },
+    { id: 'chop-coaster', name: 'Chóp Coaster', price: 25000, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAuoMzh1oaaOTI5GIbyr6PMArXafbwJcGCbdiZVz35QQqn0juHdxY0puNrVYSD5r4GYGA2CfVokEObT5LNV-tCL87mcyMimzJkvCiK1KVp_RCr66nhJfN4MIRnWaJ_p392iUT3THTcvc5I10iuw90p5cUuvlpNMwxNJRoqZMsQbNkDR0XON1eXdI9TW44J2Kq1MPGgffecmRwG4-QNVqB9I22GoKWYuXC9AlzilkBQTvgmZjANw1TX97jjtW-JiASLF0RSnI7cl5wBl' },
+    { id: 'chop-buddy', name: 'Chóp Buddy', price: 25000, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDfgsWnNjmXNoK3YSSIxpC5EYH8Fz6AwdemEB30TNINNeK5NxVyaTBmdGDVo6IjUQSRtW5iEI4htLQVmYjQ98-Uu3luLB9SB5zLjqYvvW81pDz-VySZ-uHOj8qMUHwSBFIVrz3DUP9Pkue7xYDIhwjrHPNR8VPh0svk16AS67LAyvOaepQYxWyWxGEwF__5unlxc-Fi3Ew4BO6x2lpcVUUHF1C5_BVphm7xe1HtX3YIGYsrDiv62GVjBWos4b7biM5hWihxJJ7hpKhF' },
+    { id: 'chop-bloom', name: 'Chóp Bloom', price: 70000, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDPnmKjYzfTRyf2f14c6CTmdBIAUnJkO_uE_pmWbA1GhMJVuf8Myr84HE283KjxiPLdhxOlOPhZSh49nZQ05T2DumLTrg7ei7-Qep4KINcHRsBIPKsf_R4e0Z1of3TTGllDt6cNgxboX2XkL-2Z4wli0Ee7gu9zrIc_b8Y-XxNwsrMLvDQT5KZReW-42GRe86ptbSZA6jWo1uZNW2O7jCrEuO9zmSedT-relBAnBeel8MvKDJ7gGzC3saF46nO0Sjt7GezcF0NTW8yv' },
+    { id: 'chop-star', name: 'Chóp Star', price: 40000, img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAcI5H8-mdNEp7WmZ9wjH5gEUT5qIRv4o3hBfwXVX3Oh3Q5j7tGEMlP37r536Eq0bK0aJ0A08ZH3XXsx-kwJyGHFN7qCOFc0GJAAZSsn0zhxEQEzU2yD4QDHrqHmVH_SK6_3grtzHRLTajILMS2-W3r5JyVIm3KgvZxaNwCXr-YQ_VWnF3YPL4Yhlyy0BqhDiC9vyh7fu0a2ucwyyra698YuEB2A1E-qegCTnlP7mnd5u4h_i-baXoyj7e2S1V3G_N4zlOpkh-RntJZ' },
+  ];
+
+  let discountAmount = 0;
+
+  // ── Helpers ──
+  function getCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
+  function saveCart(cart) { localStorage.setItem(CART_KEY, JSON.stringify(cart)); }
+  function fmt(n) { return n.toLocaleString('vi-VN') + '₫'; }
+
+  function showToast(msg) {
+    const t = document.getElementById('cart-toast');
+    document.getElementById('toast-msg').textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2500);
+  }
+
+  // ── Render cart ──
+  function renderCart() {
+    const cart = getCart();
+    const container = document.getElementById('cart-items');
+    const emptyState = document.getElementById('empty-state');
+    const summary = document.getElementById('order-summary');
+    const recoSection = document.getElementById('reco-section');
+    container.innerHTML = '';
+
+    if (cart.length === 0) {
+      emptyState.classList.add('show');
+      summary.style.display = 'none';
+      recoSection.style.display = 'block';
+      renderRecommendations(cart);
+      return;
+    }
+
+    emptyState.classList.remove('show');
+    summary.style.display = 'block';
+    recoSection.style.display = 'block';
+
+    cart.forEach((item, idx) => {
+      const subtotal = item.price * item.qty;
+      const el = document.createElement('div');
+      el.className = 'cart-item';
+      el.style.animationDelay = `${idx * 0.06}s`;
+      el.innerHTML = `
+        <div class="item-img">
+          <img src="${item.img}" alt="${item.name}" onerror="this.style.display='none'">
+        </div>
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-unit-price">Đơn giá: <span>${fmt(item.price)}</span></div>
+        </div>
+        <div class="item-right">
+          <div class="item-subtotal">${fmt(subtotal)}</div>
+          <div class="qty-ctrl">
+            <button onclick="changeQty('${item.id}', -1)">−</button>
+            <span>${item.qty}</span>
+            <button onclick="changeQty('${item.id}', 1)">+</button>
+          </div>
+          <button class="delete-btn" onclick="removeItem('${item.id}')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+            Xóa
+          </button>
+        </div>
+      `;
+      container.appendChild(el);
+    });
+
+    updateSummary(cart);
+    renderRecommendations(cart);
+  }
+
+  function updateSummary(cart) {
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const total = subtotal + SHIPPING - discountAmount;
+    const itemCount = cart.reduce((s, i) => s + i.qty, 0);
+
+    document.getElementById('item-count').textContent = itemCount;
+    document.getElementById('subtotal-val').textContent = fmt(subtotal);
+    document.getElementById('shipping-val').textContent = fmt(SHIPPING);
+    document.getElementById('total-val').textContent = fmt(Math.max(0, total));
+  }
+
+  function changeQty(id, delta) {
+    const cart = getCart();
+    const item = cart.find(i => i.id === id);
+    if (!item) return;
+    item.qty = Math.max(1, item.qty + delta);
+    saveCart(cart);
+    renderCart();
+  }
+
+  function removeItem(id) {
+    let cart = getCart();
+    const item = cart.find(i => i.id === id);
+    cart = cart.filter(i => i.id !== id);
+    saveCart(cart);
+    renderCart();
+    if (item) showToast(`Đã xóa "${item.name}" khỏi giỏ hàng`);
+  }
+
+  function applyVoucher() {
+    const code = document.getElementById('voucher-input').value.trim().toUpperCase();
+    const discountRow = document.getElementById('discount-row');
+    const discountVal = document.getElementById('discount-val');
+    const cart = getCart();
+
+    const vouchers = { 'CHOPNON10': 0.10, 'NONI20': 0.20, 'WELCOME': 0.05 };
+    if (vouchers[code]) {
+      const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      discountAmount = Math.round(subtotal * vouchers[code]);
+      discountRow.style.display = 'flex';
+      discountVal.textContent = '−' + fmt(discountAmount);
+      updateSummary(cart);
+      showToast(`Áp dụng mã "${code}" thành công! Giảm ${vouchers[code]*100}%`);
+    } else {
+      discountAmount = 0;
+      discountRow.style.display = 'none';
+      updateSummary(cart);
+      showToast('Mã giảm giá không hợp lệ');
+    }
+  }
+
+  const CHECKOUT_CART_KEY = 'chopnon_checkout_cart';
+  const CHECKOUT_URL = 'thanh-toan.html';
+
+  function checkout() {
+    const cart = getCart();
+    if (!cart.length) {
+      showToast('Giỏ hàng đang trống, bạn hãy thêm sản phẩm trước nhé!');
+      return;
+    }
+
+    const btn = document.getElementById('checkout-btn');
+    const subtotal = cart.reduce((s, i) => s + i.price * i.qty, 0);
+    const order = {
+      items: cart,
+      subtotal,
+      shipping: SHIPPING,
+      discount: discountAmount,
+      total: Math.max(0, subtotal + SHIPPING - discountAmount),
+      createdAt: new Date().toISOString()
+    };
+
+    localStorage.setItem(CHECKOUT_CART_KEY, JSON.stringify(order));
+
+    btn.textContent = 'Đang chuyển sang thanh toán...';
+    btn.style.background = '#4caf50';
+    btn.disabled = true;
+    showToast('Đang chuyển sang trang thanh toán...');
+
+    setTimeout(() => {
+      window.location.href = CHECKOUT_URL;
+    }, 700);
+  }
+
+  // ── Recommendations ──
+  function renderRecommendations(cart) {
+    const cartIds = new Set(cart.map(i => i.id));
+    const recos = ALL_PRODUCTS.filter(p => !cartIds.has(p.id)).slice(0, 4);
+    const grid = document.getElementById('reco-grid');
+    grid.innerHTML = '';
+    recos.forEach(p => {
+      const el = document.createElement('div');
+      el.className = 'reco-card';
+      el.innerHTML = `
+        <div class="reco-img">
+          <img src="${p.img}" alt="${p.name}">
+          <button class="reco-add-btn" onclick="addReco('${p.id}')" title="Thêm vào giỏ">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </button>
+        </div>
+        <div class="reco-name">${p.name}</div>
+        <div class="reco-price">${fmt(p.price)}</div>
+      `;
+      grid.appendChild(el);
+    });
+  }
+
+  function addReco(id) {
+    const p = ALL_PRODUCTS.find(x => x.id === id);
+    if (!p) return;
+    const cart = getCart();
+    const existing = cart.find(i => i.id === id);
+    if (existing) { existing.qty++; } else { cart.push({ ...p, qty: 1 }); }
+    saveCart(cart);
+    renderCart();
+    showToast(`Đã thêm "${p.name}" vào giỏ hàng!`);
+  }
+
+  // Init
+  renderCart();
+</script>
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>The NONI Collection – Chóp Nón</title>
+<link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #984307;
+    --primary-dark: #6b2e04;
+    --secondary: #934b10;
+    --tertiary: #8a4d00;
+    --accent: #f9d423;
+    --accent-light: #fff3b0;
+    --surface: #fff8f0;
+    --surface-container: #fdedc7;
+    --surface-low: #fff2d8;
+    --surface-high: #f7e7c1;
+    --surface-highest: #f1e1bc;
+    --surface-lowest: #ffffff;
+    --on-surface: #221b04;
+    --on-surface-variant: #554339;
+    --outline: #897268;
+    --outline-variant: #dcc1b5;
+    --secondary-fixed: #ffdbc7;
+    --inverse-surface: #383016;
+    --white: #ffffff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background: var(--surface);
+    color: var(--on-surface);
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(255,248,240,0.9);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(220,193,181,0.3);
+  }
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1280px; margin: 0 auto; padding: .85rem 2rem;
+  }
+  .logo {
+    display: flex; align-items: center; gap: .4rem;
+    font-family: 'Comfortaa', cursive; font-weight: 700; font-size: 1.4rem;
+    color: var(--primary); text-decoration: none;
+  }
+  .logo img { height: 40px; width: auto; object-fit: contain; }
+  .nav-actions { display: flex; gap: .5rem; }
+  .nav-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: none; cursor: pointer;
+    background: transparent; color: var(--on-surface-variant); font-size: 1.1rem;
+    display: flex; align-items: center; justify-content: center; transition: background .2s;
+    position: relative; text-decoration: none;
+  }
+  .cart-count {
+    position: absolute;
+    top: -3px;
+    right: -3px;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--primary);
+    border: 2px solid var(--surface);
+    font-family: 'Quicksand', sans-serif;
+    font-size: .72rem;
+    font-weight: 800;
+    line-height: 14px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .cart-count.show { display: flex; }
+  .nav-btn:hover { background: var(--surface-high); }
+  .back-btn {
+    display: flex; align-items: center; gap: .5rem;
+    font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: .9rem;
+    color: var(--on-surface-variant); text-decoration: none; padding: .5rem 1rem;
+    border-radius: 99px; transition: all .2s;
+  }
+  .back-btn:hover { background: var(--surface-container); color: var(--primary); }
+  .back-btn svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+
+  /* ── HERO / INTRO ── */
+  .page-intro {
+    padding: 7rem 2rem 5rem;
+    max-width: 1280px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 3.5rem;
+  }
+  @media(min-width:1024px) { .page-intro { flex-direction: row; align-items: center; gap: 5rem; } }
+
+  .intro-left { flex: 1; }
+  .chapter-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    padding: .45rem 1.1rem; background: var(--accent-light); color: var(--primary);
+    border-radius: 99px; font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: .8rem; text-transform: uppercase; letter-spacing: .08em;
+    margin-bottom: 1.25rem; border: 1.5px solid rgba(249,212,35,.5);
+  }
+  .chapter-badge svg { width: 14px; height: 14px; fill: var(--primary); }
+  .intro-title {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(2.8rem, 5vw, 4.5rem); line-height: 1.05;
+    color: var(--primary); letter-spacing: -2px; margin-bottom: 1.5rem;
+  }
+  .intro-body { color: var(--on-surface-variant); font-size: 1.05rem; line-height: 1.85; }
+  .intro-body p + p { margin-top: 1rem; }
+  .intro-body b { color: var(--primary); font-weight: 600; }
+
+  .intro-right { flex: 1; position: relative; }
+  .intro-img-wrap {
+    aspect-ratio: 1/1; border-radius: 4rem; overflow: hidden;
+    box-shadow: 0 32px 80px rgba(152,67,7,.2); position: relative; z-index: 1;
+  }
+  .intro-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .blob-bg {
+    position: absolute; width: 300px; height: 300px;
+    background: rgba(253,159,95,.2); border-radius: 50%;
+    filter: blur(60px); bottom: -60px; left: -60px; z-index: 0;
+  }
+
+  /* ── JOURNEY SECTION ── */
+  .journey { padding: 0 2rem 6rem; background: var(--surface-lowest); }
+  .journey-header {
+    max-width: 1280px; margin: 0 auto; padding: 5rem 0 4rem;
+    text-align: center;
+  }
+  .journey-header h2 {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(2rem, 3.5vw, 3rem); color: var(--secondary);
+    margin-bottom: 1rem;
+  }
+  .journey-header p { color: var(--on-surface-variant); font-size: 1.05rem; line-height: 1.75; max-width: 680px; margin: 0 auto; }
+
+  .chapters { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; gap: 7rem; }
+
+  .chapter {
+    display: flex; flex-direction: column; gap: 3rem; align-items: center;
+    opacity: 0; transform: translateY(40px); transition: opacity .8s ease, transform .8s ease;
+  }
+  .chapter.visible { opacity: 1; transform: translateY(0); }
+  @media(min-width:1024px) {
+    .chapter { flex-direction: row; gap: 5rem; }
+    .chapter.reverse { flex-direction: row-reverse; }
+  }
+
+  .chapter-img-col { flex: 1; display: flex; justify-content: center; }
+  .chapter-img-frame {
+    position: relative; width: min(460px, 90vw);
+  }
+  .chapter-img-bg {
+    position: absolute; inset: 0; border-radius: 2.5rem;
+    transform: rotate(3deg); transition: transform .5s ease; z-index: 0;
+  }
+  .chapter.reverse .chapter-img-bg { transform: rotate(-3deg); }
+  .chapter-img-frame:hover .chapter-img-bg { transform: rotate(0deg); }
+  .chapter-img-frame img {
+    position: relative; z-index: 1; width: 100%; border-radius: 2.5rem;
+    box-shadow: 0 20px 60px rgba(152,67,7,.18); display: block;
+  }
+  .secret-badge {
+    position: absolute; top: -14px; right: -14px; z-index: 2;
+    background: var(--primary); color: #fff;
+    padding: .5rem 1rem; border-radius: 12px;
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: .85rem;
+    transform: rotate(12deg); box-shadow: 0 4px 16px rgba(152,67,7,.4);
+  }
+
+  .chapter-text-col { flex: 1; }
+  .chapter-num {
+    font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: .8rem;
+    text-transform: uppercase; letter-spacing: .12em; margin-bottom: .5rem;
+  }
+  .chapter-title {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem); line-height: 1.15;
+    color: var(--on-surface); margin-bottom: 1.25rem; letter-spacing: -.5px;
+  }
+  .chapter-body { color: var(--on-surface-variant); font-size: 1rem; line-height: 1.85; }
+  .chapter-body div + div { margin-top: .75rem; }
+  .chapter-tag {
+    display: inline-flex; align-items: center; gap: .5rem;
+    margin-top: 1.5rem; font-family: 'Quicksand', sans-serif; font-weight: 700;
+    font-size: .95rem;
+  }
+  .chapter-tag svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  /* ── RETURN SECTION ── */
+  .return-section { padding: 4rem 2rem; }
+  .return-card {
+    max-width: 1280px; margin: 0 auto;
+    background: rgba(152,67,7,.05); border-radius: 3rem;
+    padding: 4rem 3rem; display: flex; flex-direction: column; align-items: center; text-align: center;
+    opacity: 0; transform: translateY(40px); transition: all .8s ease;
+  }
+  .return-card.visible { opacity: 1; transform: translateY(0); }
+  .return-icon {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--primary); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.8rem; margin-bottom: 2rem;
+    box-shadow: 0 8px 24px rgba(152,67,7,.3);
+  }
+  .return-card h2 {
+    font-family: 'Comfortaa', cursive; font-weight: 700;
+    font-size: clamp(1.8rem, 3vw, 2.8rem); color: var(--primary); margin-bottom: 1.25rem;
+  }
+  .return-card p { color: var(--on-surface-variant); font-size: 1.1rem; line-height: 1.8; max-width: 760px; margin-bottom: 2.5rem; }
+  .return-divider { width: 100%; height: 1px; background: rgba(220,193,181,.4); margin-bottom: 2.5rem; }
+  .return-stats { display: flex; flex-wrap: wrap; justify-content: center; gap: 3rem; }
+  .stat { display: flex; flex-direction: column; align-items: center; }
+  .stat-num { font-family: 'Comfortaa', cursive; font-size: 2rem; font-weight: 700; }
+  .stat-label { font-size: .78rem; color: var(--on-surface-variant); text-transform: uppercase; letter-spacing: .1em; margin-top: .25rem; text-align: center; }
+
+  /* ── FEATURES GRID ── */
+  .features { padding: 4rem 2rem; }
+  .features-inner { max-width: 1280px; margin: 0 auto; }
+  .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media(max-width:768px) { .features-grid { grid-template-columns: 1fr; } }
+  .feature-card {
+    padding: 2.5rem; border-radius: 2rem; border: 1px solid rgba(220,193,181,.25);
+    opacity: 0; transform: translateY(24px); transition: all .7s ease;
+  }
+  .feature-card.visible { opacity: 1; transform: translateY(0); }
+  .feature-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; margin-bottom: 1.25rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,.08);
+  }
+  .feature-card h3 { font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.1rem; margin-bottom: .6rem; }
+  .feature-card p { color: var(--on-surface-variant); font-size: .95rem; line-height: 1.7; }
+
+  /* ── SHOPPING SECTION ── */
+  .shopping { padding: 4rem 2rem 6rem; }
+  .shopping-inner {
+    max-width: 1280px; margin: 0 auto;
+    background: var(--surface-lowest); border-radius: 3rem;
+    padding: 3.5rem 3rem; border: 1px solid rgba(220,193,181,.15);
+    box-shadow: 0 4px 40px rgba(152,67,7,.06); overflow: hidden; position: relative;
+  }
+  .shop-bg-circle {
+    position: absolute; width: 400px; height: 400px;
+    background: rgba(152,67,7,.04); border-radius: 50%;
+    top: -120px; right: -120px; pointer-events: none;
+  }
+  .shop-layout { display: flex; flex-direction: column; gap: 3.5rem; }
+  @media(min-width:1024px) { .shop-layout { flex-direction: row; align-items: center; } }
+
+  .shop-options { flex: 1; }
+  .shop-title { font-family: 'Comfortaa', cursive; font-weight: 700; font-size: 1.8rem; color: var(--on-surface); margin-bottom: .5rem; }
+  .shop-subtitle { color: var(--on-surface-variant); font-size: .95rem; margin-bottom: 2.5rem; }
+
+  .purchase-option {
+    display: flex; align-items: center; gap: 1.25rem;
+    padding: 1.25rem 1.5rem; border-radius: 1.5rem;
+    border: 2px solid var(--outline-variant); cursor: pointer;
+    transition: all .25s; margin-bottom: 1rem; background: var(--surface);
+  }
+  .purchase-option:hover { border-color: var(--primary); }
+  .purchase-option.selected { border-color: var(--primary); background: var(--surface-low); }
+  .purchase-option input { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
+  .purchase-option label { flex: 1; cursor: pointer; }
+  .purchase-option .opt-name { font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--on-surface); }
+  .purchase-option .opt-desc { font-size: .875rem; color: var(--on-surface-variant); margin-top: .15rem; }
+  .purchase-option .opt-price { font-family: 'Quicksand', sans-serif; font-weight: 800; font-size: 1.15rem; color: var(--primary); white-space: nowrap; }
+
+  .qty-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-top: 1.75rem; }
+  .qty-ctrl {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--surface-high); border-radius: 99px; padding: .75rem 1.5rem;
+  }
+  .qty-ctrl button { border: none; background: none; cursor: pointer; color: var(--on-surface-variant); transition: color .2s; padding: 0; line-height: 1; }
+  .qty-ctrl button:hover { color: var(--primary); }
+  .qty-ctrl button svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+  .qty-num { font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1.1rem; min-width: 28px; text-align: center; }
+  .btn-add {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: .6rem;
+    padding: 1rem 2rem; background: var(--primary); color: #fff;
+    border: none; border-radius: 99px; font-family: 'Quicksand', sans-serif;
+    font-weight: 700; font-size: 1.05rem; cursor: pointer;
+    box-shadow: 0 8px 24px rgba(152,67,7,.3); transition: all .2s;
+  }
+  .btn-add:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(152,67,7,.4); }
+  .btn-add svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  .shop-visual { flex: 1; display: flex; justify-content: center; }
+  .shop-img-wrap { position: relative; width: min(360px, 90vw); aspect-ratio: 1/1; }
+  .shop-img-bg {
+    position: absolute; inset: 0; background: var(--secondary-fixed);
+    border-radius: 4rem; transform: rotate(6deg);
+  }
+  .shop-img-box {
+    position: absolute; inset: 0; background: #fff;
+    border-radius: 4rem; overflow: hidden; box-shadow: 0 24px 60px rgba(152,67,7,.18);
+  }
+  .shop-img-box img { width: 100%; height: 100%; object-fit: cover; }
+  .shop-img-label {
+    position: absolute; bottom: 1.25rem; left: 1.25rem; right: 1.25rem;
+    background: rgba(255,248,240,.92); backdrop-filter: blur(8px);
+    padding: .85rem 1.1rem; border-radius: 1.2rem;
+    border: 1px solid rgba(220,193,181,.35);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .shop-img-label span { font-family: 'Quicksand', sans-serif; font-weight: 700; font-size: 1rem; color: var(--primary); }
+  .edition-tag {
+    padding: .25rem .75rem; background: rgba(183,91,33,.15); color: var(--primary);
+    border-radius: 99px; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--surface-highest); border-radius: 1.5rem 1.5rem 0 0;
+    padding: 3rem 2rem 2rem; margin-top: 2rem;
+  }
+  .footer-inner {
+    max-width: 1280px; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center; gap: 1.5rem;
+    text-align: center;
+  }
+  @media(min-width:768px) { .footer-inner { flex-direction: row; justify-content: space-between; text-align: left; } }
+  .footer-brand { font-family: 'Comfortaa', cursive; font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+  .footer-copy { font-size: .85rem; color: var(--on-surface-variant); margin-top: .25rem; }
+  .footer-links { display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; }
+  .footer-links a { color: var(--on-surface-variant); text-decoration: underline; text-underline-offset: 3px; font-size: .875rem; transition: color .2s; }
+  .footer-links a:hover { color: var(--secondary); }
+  .footer-icons { display: flex; gap: 1rem; }
+  .footer-icons a { color: var(--primary); opacity: .7; transition: opacity .2s; }
+  .footer-icons a:hover { opacity: 1; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity .75s ease, transform .75s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .d1 { transition-delay: .1s; } .d2 { transition-delay: .2s; } .d3 { transition-delay: .3s; }
+</style>
+</head>
+<body id="top">
+
+<!-- HEADER -->
+<header>
+  <nav>
+    <a href="chopnon-landing.html" class="back-btn">
+      <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+      Trang chủ
+    </a>
+    <a href="chopnon-landing.html" class="logo">
+      <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoFwwji0r9ujZoAjUEYFtKEbWoNxEN7jg5_dfzgevSqaXpDZyCNhqzFYFn2TQWgGLeawVLUvOl2bonOJ2AnjcDiErLrZKqla0Ucq_FBgzTEs4sMWW5jjnBvvfBQL54jxM5IGHZeQ6n1M48yeHGZwkQxrqpzyqKzvL5071L8fSX9pUczur8bpV06q5-M4sewHZSPZCBiSWnhq2y1yCfqDDHbCrTmS9AIiAwAigcir2Bg7bpRC1Vh6rKCWDk84Xw9j0q7qcLLbQlxLlP" alt="Chóp Nón">
+      Chóp Nón
+    </a>
+    <div class="nav-actions">
+      <a href="chopnon-cart.html" class="nav-btn" title="Giỏ hàng">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+        <span class="cart-count" id="cart-count">0</span>
+      </a>
+      <button class="nav-btn" title="Tài khoản">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main>
+
+  <!-- INTRO -->
+  <section style="max-width:1280px;margin:0 auto;padding:7rem 2rem 5rem;">
+    <div style="display:flex;flex-direction:column;gap:3.5rem;align-items:center;" class="intro-wrap">
+      <div style="flex:1;" class="reveal">
+        <div class="chapter-badge">
+          <svg viewBox="0 0 24 24" width="14" height="14"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          Khởi Đầu
+        </div>
+        <h1 class="intro-title">Chuyện Về Noni</h1>
+        <div class="intro-body">
+          <p>Câu chuyện bắt đầu vào một đêm mưa bão mù trời tại <b>Làng Chuông</b>. Một nghệ nhân già ngồi bên chồng nón dang dở, chậm rãi khâu những đường kim cuối cùng. Đôi tay bà đã nhăn nheo theo năm tháng, nhưng từng đường khâu vẫn cẩn thận như thuở nào.</p>
+          <p>Xung quanh bà là những chiếc nón đã hoàn thiện, những bó lá nón được phơi khô và những dụng cụ làm nghề đã theo bà suốt cả cuộc đời. Ngoài kia, ngôi làng từng rộn ràng tiếng người nay trở nên yên ắng.</p>
+          <p>Bỗng một tia sáng kỳ lạ lóe lên, những mẩu lá cọ thừa trên sàn bỗng rực sáng, cuộn tròn và kết tinh lại thành một sinh linh nhỏ bé với gương mặt tròn trĩnh và đôi mắt đầy tò mò.</p>
+          <p><b>Đó chính là Noni.</b></p>
+          <p>Lớn lên bên những chiếc nón lá và những câu chuyện của nghệ nhân làm nón, Noni luôn thắc mắc vì sao một chiếc nón lá bình dị lại có thể được người dân gìn giữ qua nhiều thế hệ. Để tìm câu trả lời, Noni quyết định rời làng nón Chuông và bắt đầu hành trình khám phá Việt Nam.</p>
+        </div>
+      </div>
+      <div style="flex:1;position:relative;width:100%;max-width:560px;" class="reveal d2">
+        <div style="aspect-ratio:1/1;border-radius:4rem;overflow:hidden;box-shadow:0 32px 80px rgba(152,67,7,.2);position:relative;z-index:1;">
+          <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8d6KkfP6CP-9iuVYG_gnFFPAapAyaIH_er2cnvux7q2b7M22WSTkNwm1-FwEhupOQwssgZI3O-Xf-vQPanIprbpJM4TXBCqjzq67FdMaWdy6C7bhctXQqlQcUOQha6OP0Vx1--tsP9-pOZcRHsrFeSWFnL7jgjKOJvWiCNN0EyahQtX8QxKAFobsAc9tyiffb9crmzdW0OzSqJT6FJM9o3uqvUvKalPRu0TV06p1i_TvBMtp8Vr5xR-XDhG3NuDMVi2k58lptk1iZ" alt="NONI Origin" style="width:100%;height:100%;object-fit:cover;transform:scale(1.05);">
+        </div>
+        <div style="position:absolute;width:280px;height:280px;background:rgba(253,159,95,.18);border-radius:50%;filter:blur(60px);bottom:-60px;left:-50px;z-index:0;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNEY / CHAPTERS -->
+  <section class="journey" style="background:var(--surface-lowest);">
+    <div class="journey-header reveal">
+      <h2>Nhật Ký Hành Trình</h2>
+      <p>Mỗi nơi Noni đi qua là một bài học, mỗi vùng đất là một câu chuyện, để rồi từng bước giúp cậu hiểu rằng chiếc nón lá không chỉ là một vật dụng quen thuộc mà còn là biểu tượng của lịch sử, văn hóa và tâm hồn người Việt.</p>
+    </div>
+
+    <div class="chapters">
+
+      <!-- Chapter 1: Sắc Cờ -->
+      <div class="chapter" data-reveal>
+        <div class="chapter-img-col">
+          <div class="chapter-img-frame">
+            <div class="chapter-img-bg" style="background:rgba(152,67,7,.1);"></div>
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFi6t-Yq5vzieiyGljqrsUxPpXUsnSj2At5Cz6Q0TRxCY73fRYPRvxbAViwmQIxud87gvN2wi8bnBlXzRa_L7hGB_MZaeGnXLrh-vHU5rgx7guNVyvRcTonJHNYqkKqTC-D77aLr78GHUNlj7BECWp1KEx3v2tHF6SeWv3rU1epkPAXHPIYf3SjBQh3cufGWX2GsweT2T8hS44h7z8og0LPFYKkPiIYSpMcEqvhhQaDR-tYeLNoTdkm2CFLvBeNC0-K3kbw5Yv8C2u" alt="Noni Sắc Cờ">
+          </div>
+        </div>
+        <div class="chapter-text-col">
+          <div class="chapter-num" style="color:var(--primary);">Chương 1 · Thủ Đô Ngàn Năm</div>
+          <h3 class="chapter-title">Noni Sắc Cờ –<br><span style="color:var(--primary);">Trái tim tự hào</span></h3>
+          <div class="chapter-body">
+            <div>Điểm dừng chân đầu tiên là <b style="color:var(--primary);">Hà Nội</b>.</div>
+            <div>Noni đến vào một ngày phố phường ngập tràn sắc đỏ. Những lá cờ tung bay trong gió, những nụ cười rạng rỡ xuất hiện trên gương mặt của mọi người. Giữa dòng người đông đúc, Noni cảm nhận được một tình yêu quê hương rất đặc biệt — thứ kết nối hàng triệu con người dù họ đến từ những nơi khác nhau.</div>
+            <div>Chiếc nón của Noni khoác lên sắc đỏ rực rỡ và ngôi sao vàng năm cánh, tượng trưng cho tinh thần đoàn kết và niềm tự hào dân tộc mãnh liệt.</div>
+            <div>Nó hiểu rằng văn hóa không chỉ nằm trong những di tích hay bảo tàng, mà còn sống trong niềm tự hào dân tộc của mỗi người Việt.</div>
+          </div>
+          <div class="chapter-tag" style="color:var(--primary);">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            Niềm tự hào dân tộc
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 2: Non Nước -->
+      <div class="chapter reverse" data-reveal>
+        <div class="chapter-img-col">
+          <div class="chapter-img-frame">
+            <div class="chapter-img-bg" style="background:rgba(147,75,16,.08);"></div>
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCstSHPAuXtwrwrNGsbTxfM6GvdHtwktc_u_CHxC0kIy2n-Ex15afTohgwfhggpmCYQpLZzXF2IpCPXjTT_mQg5CoN0FT2DxxcYldQ30cpKx8XhPo6mKVWy6JFlJ4R0W_Ql-5sBoygY8b1jyqYzpk_XdkjLE0ksQw0Os7lBezd4Vm2pYJeasromS2-33rTfvm6nFTuJsOuKUqU6M8MxICzYXcu5DsUGfNAidkIukmbK84-tCHC1E21QasxQGWyud1Ob3mIiBayRZgN3" alt="Noni Non Nước">
+          </div>
+        </div>
+        <div class="chapter-text-col">
+          <div class="chapter-num" style="color:var(--secondary);">Chương 2 · Miền Sông Nước</div>
+          <h3 class="chapter-title">Noni Non Nước –<br><span style="color:var(--secondary);">Sắc Lam Nguồn Cội</span></h3>
+          <div class="chapter-body">
+            <div>Hành trình tiếp tục đưa Noni xuôi về <b style="color:var(--secondary);">miền sông nước</b>.</div>
+            <div>Những dòng phù sa lặng lẽ chảy qua cánh đồng lúa xanh bát ngát. Những người nông dân đội nón lá dưới nắng, những chiếc ghe nhỏ len lỏi trên sông, những phiên chợ nổi tấp nập từ sáng sớm.</div>
+            <div>Noni nhận ra chiếc nón lá không chỉ là biểu tượng của một làng nghề, mà còn là người bạn đồng hành của biết bao thế hệ người Việt.</div>
+            <div>Nhìn những cánh đồng, dòng sông và phiên chợ sớm, Noni bắt đầu hiểu rằng chiếc nón lá được gìn giữ qua nhiều thế hệ vì nó luôn âm thầm đồng hành cùng đời sống bình dị của người Việt.</div>
+          </div>
+          <div class="chapter-tag" style="color:var(--secondary);">
+            <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            Đồng hành và gắn bó
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 3: Trời Đất -->
+      <div class="chapter" data-reveal>
+        <div class="chapter-img-col">
+          <div class="chapter-img-frame">
+            <div class="chapter-img-bg" style="background:rgba(138,77,0,.08);"></div>
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXc-NJMMwtVqw5pxI8hTXMR5I6lsoNR64Vr8v-NBrKK5jaszu5cXsNpSAv7af4UjUf4jwuLKC5nEGSNH9yT2TaT1aCeyXFXL28kBSXygav3qlYztZnq7BY-FSp-snVwRuX-Ni5MRykLhPzIqJr2-JTv6wqzxLqKcFZsT77NfAA48mFqk6kbqyhee0og4UmSPaAQC2llGgsGCKAMkpaHIEHEebMvjnTWogtkXgXzVP18fAJ5zvsOeeDNcU7quMmTnlYTHia29eeRsbh" alt="Noni Trời Đất">
+          </div>
+        </div>
+        <div class="chapter-text-col">
+          <div class="chapter-num" style="color:var(--tertiary);">Chương 3 · Hơi Thở Đồng Quê</div>
+          <h3 class="chapter-title">Noni Trời Đất –<br><span style="color:var(--tertiary);">Khoảng Lặng Bình Yên</span></h3>
+          <div class="chapter-body">
+            <div>Rời miền sông nước, Noni tiếp tục bước đi đến những <b style="color:var(--tertiary);">miền quê yên bình</b>, nơi thời gian dường như trôi chậm hơn.</div>
+            <div>Những khoảng sân đầy nắng, những hàng cau trước ngõ, những chiếc nón lá đang được phơi dưới bầu trời trong xanh.</div>
+            <div>Ở đó, Noni gặp những người thợ vẫn âm thầm gìn giữ nghề truyền thống bằng đôi bàn tay chai sạn. Không ồn ào, không nổi tiếng, nhưng họ vẫn kiên trì giữ lấy những giá trị mà mình yêu quý.</div>
+            <div>Chiếc áo của Noni dần chuyển thành màu trắng — màu của sự bình yên, màu của những điều giản dị nhưng bền bỉ tồn tại theo năm tháng.</div>
+          </div>
+          <div class="chapter-tag" style="color:var(--tertiary);">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Vẻ đẹp bình dị
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 4: Sơn Cước (Secret) -->
+      <div class="chapter reverse" data-reveal>
+        <div class="chapter-img-col">
+          <div class="chapter-img-frame">
+            <div class="chapter-img-bg" style="background:rgba(56,48,22,.12);"></div>
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSq7sdt1h6yv6LhJoFcy3hr5I6lsoNR64Vr8v-NBrKK5jaszu5cXsNpSAv7af4UjUf4jwuLKC5nEGSNH9yT2TaT1aCeyXFXL28kBSXygav3qlYztZnq7BY-FSp-snVwRuX-Ni5MRykLhPzIqJr2-JTv6wqzxLqKcFZsT77NfAA48mFqk6kbqyhee0og4UmSPaAQC2llGgsGCKAMkpaHIEHEebMvjnTWogtkXgXzVP18fAJ5zvsOeeDNcU7quMmTnlYTHia29eeRsbh" 
+            onerror="this.src='https://lh3.googleusercontent.com/aida-public/AB6AXuCSq7sdt1h6yv6LhJoFcy3fr4RPPt7YgOMEq5sk0zG-V3fed3ilAA_ti-kUGXh1AAL2Inwn3qHCJdeoq4VddkMC3szRPhrkp7S9hkSfgWeaIEe_b49GgS-7w-9_T1oSMo6_djPzBmRtpM0fuOCMzMsBADNjHx6NV8Te4ACkvP28HDj3dDtSuFPM1m1fMB1o4-cUyWr8VL-1dRjsTSjh24yQNLd_UBFfYPiZdHTxokW2lTA28_X_zzTatPZ7B64g37HMQ0v4vvT4xPyr'" alt="Noni Sơn Cước">
+            <div class="secret-badge">SECRET</div>
+          </div>
+        </div>
+        <div class="chapter-text-col">
+          <div class="chapter-num" style="color:var(--on-surface);">Chương Cuối · Hợp Nhất Đại Ngàn</div>
+          <h3 class="chapter-title">Noni Sơn Cước –<br><span style="color:var(--primary);">Đại Ngàn Thức Giấc</span></h3>
+          <div class="chapter-body">
+            <div>Giữa đại ngàn phủ đầy sương mờ, Noni đã tìm thấy mảnh ghép cuối cùng của hành trình.</div>
+            <div>Một phiên bản <b style="color:var(--primary);">bí ẩn</b> lấy cảm hứng từ những giá trị văn hóa vùng cao đang chờ được khám phá.</div>
+          </div>
+          <div style="margin-top:1.5rem;">
+            <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuDiy_upT_ih3z2htS4KaK_oUgoMaJ-f0gLtAOdPdT0oUVqpkZzhGzuowPwgr4oeBwgqmznwgOyTe53dmdDbpzrxpHhYQpvMe6wiMbD6KEqsqDH208B0NmKEQLsJLkMIRD4RdDsla1O7fGcfOo2OdruSTDnf3RMS9Rz1fKeNcvhu_D9hjAPJXhTYYpftgw3jBzXfBQVbyNY8zuybD4DRcFd2kzUQoT9zWX5vN115BKswX0k6t-ld8e8_4X9R0tkUm_m28n52_L7meS7t" alt="Tỉ lệ xuất hiện cực hiếm" style="height:48px;object-fit:contain;">
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /chapters -->
+  </section>
+
+  <!-- RETURN / PROMISE -->
+  <section style="padding:5rem 2rem;">
+    <div class="return-card" id="return-card">
+      <div class="return-icon">🏠</div>
+      <h2>Lời Hứa Trở Về</h2>
+      <p>Sau hành trình vạn dặm, Noni đã trở về Làng Chuông. Nhưng lần này, Noni không còn là một mảnh lá cọ vô danh, mà là người dẫn đường, mang theo những câu chuyện di sản để kể cho thế hệ trẻ. Sứ mệnh mới của Noni là thắp lên ngọn lửa tình yêu văn hóa trong lòng mỗi người, để chiếc nón lá không chỉ là ký ức, mà là tương lai.</p>
+      <div class="return-divider"></div>
+      <div class="return-stats">
+        <div class="stat">
+          <span class="stat-num" style="color:var(--primary);">100%</span>
+          <span class="stat-label">Tâm huyết</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" style="color:var(--secondary);">Vạn dặm</span>
+          <span class="stat-label">Hành trình trải nghiệm</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" style="color:var(--tertiary);">Mãi mãi</span>
+          <span class="stat-label">Giá trị văn hóa</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="features">
+    <div class="features-inner">
+      <div class="features-grid">
+        <div class="feature-card reveal" style="background:var(--surface-high);">
+          <div class="feature-icon" style="background:var(--primary);color:#fff;">♻️</div>
+          <h3 style="color:var(--primary);">Vật Liệu Bền Vững</h3>
+          <p>Kết hợp nhựa tái chế và nón lá thật từ làng nghề truyền thống, tạo nên sản phẩm thân thiện môi trường nhưng vẫn giàu giá trị văn hóa.</p>
+        </div>
+        <div class="feature-card reveal d1" style="background:var(--surface-container);">
+          <div class="feature-icon" style="background:var(--secondary);color:#fff;">📐</div>
+          <h3 style="color:var(--secondary);">Tỉ Lệ Vàng</h3>
+          <p>Cao 8cm — kích thước lý tưởng trưng bày trên bàn làm việc, tủ sách, kể lại câu chuyện mỗi ngày.</p>
+        </div>
+        <div class="feature-card reveal d2" style="background:var(--surface-low);">
+          <div class="feature-icon" style="background:var(--tertiary);color:#fff;">⭐</div>
+          <h3 style="color:var(--tertiary);">Ý Nghĩa Sâu Sắc</h3>
+          <p>Bên trong mỗi blind box là một nhân vật cùng story card riêng, mang theo những câu chuyện về vẻ đẹp Việt Nam.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SHOPPING -->
+  <section class="shopping" id="shopping-section">
+    <div class="shopping-inner reveal">
+      <div class="shop-bg-circle"></div>
+      <div class="shop-layout">
+        <div class="shop-options">
+          <h2 class="shop-title">Đón Noni Về Nhà</h2>
+          <p class="shop-subtitle">Chọn cách bạn muốn bắt đầu hành trình cùng Noni.</p>
+
+          <div class="purchase-option selected" id="opt-single" onclick="selectOption('single')">
+            <input type="radio" name="purchase_option" id="single" checked>
+            <label for="single">
+              <div class="opt-name">Lẻ 1 Blindbox</div>
+              <div class="opt-desc">1 Nhân vật ngẫu nhiên — Một sự bất ngờ thú vị!</div>
+            </label>
+            <span class="opt-price">299.000đ</span>
+          </div>
+
+          <div class="purchase-option" id="opt-fullset" onclick="selectOption('fullset')">
+            <input type="radio" name="purchase_option" id="fullset">
+            <label for="fullset">
+              <div class="opt-name">Nguyên Bộ (4 Hộp)</div>
+              <div class="opt-desc">Đủ bộ không trùng, cơ hội cao nhận 'Secret'.</div>
+            </label>
+            <span class="opt-price">1.149.000đ</span>
+          </div>
+
+          <div class="qty-row">
+            <div class="qty-ctrl">
+              <button onclick="changeQty(-1)" title="Giảm">
+                <svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+              <span class="qty-num" id="qty-display">1</span>
+              <button onclick="changeQty(1)" title="Tăng">
+                <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              </button>
+            </div>
+            <button class="btn-add" onclick="addToCart()">
+              <svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              Thêm vào Giỏ Hàng
+            </button>
+          </div>
+        </div>
+
+        <div class="shop-visual">
+          <div class="shop-img-wrap">
+            <div class="shop-img-bg"></div>
+            <div class="shop-img-box">
+              <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8d6KkfP6CP-9iuVYG_gnFFPAapAyaIH_er2cnvux7q2b7M22WSTkNwm1-FwEhupOQwssgZI3O-Xf-vQPanIprbpJM4TXBCqjzq67FdMaWdy6C7bhctXQqlQcUOQha6OP0Vx1--tsP9-pOZcRHsrFeSWFnL7jgjKOJvWiCNN0EyahQtX8QxKAFobsAc9tyiffb9crmzdW0OzSqJT6FJM9o3uqvUvKalPRu0TV06p1i_TvBMtp8Vr5xR-XDhG3NuDMVi2k58lptk1iZ" alt="Collection Packaging">
+              <div class="shop-img-label">
+                <span>Noni Series 1</span>
+                <span class="edition-tag">Heritage Edition</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">Chóp Nón</div>
+      <div class="footer-copy">© Chóp Nón. Gìn giữ giá trị nón lá qua ngôn ngữ thiết kế hiện đại.</div>
+    </div>
+    <div class="footer-links">
+      <a href="chopnon-landing.html#top">Trang chủ</a>
+      <a href="chopnon-landing.html#ecosystem">Chóp Nón Shop</a>
+      <a href="chopnon-landing.html#intro">Về chúng mình</a>
+      <a href="chopnon-landing.html#ecosystem">Liên hệ</a>
+    </div>
+    <div class="footer-icons">
+      <a href="#" title="Website">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </a>
+      <a href="#" title="Chia sẻ">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ── Scroll reveal ──
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('[data-reveal]').forEach(el => {
+    el.classList.add('chapter');
+    observer.observe(el);
+  });
+  document.querySelectorAll('.chapter').forEach(el => observer.observe(el));
+
+  // Return card
+  const returnCard = document.getElementById('return-card');
+  new IntersectionObserver(([e]) => { if (e.isIntersecting) returnCard.classList.add('visible'); }, { threshold: .15 }).observe(returnCard);
+
+  // Trigger visible elements in intro immediately
+  setTimeout(() => {
+    document.querySelectorAll('.reveal').forEach(el => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight) el.classList.add('visible');
+    });
+  }, 120);
+
+  // Responsive intro layout
+  function setIntroLayout() {
+    const w = document.querySelector('.intro-wrap');
+    if (!w) return;
+    if (window.innerWidth >= 1024) {
+      w.style.flexDirection = 'row';
+    } else {
+      w.style.flexDirection = 'column';
+    }
+  }
+  setIntroLayout();
+  window.addEventListener('resize', setIntroLayout);
+
+  // ── Purchase options + Cart storage ──
+  const CART_KEY = 'chopnon_cart';
+  let qty = 1;
+
+  const NONI_PRODUCTS = {
+    single: {
+      id: 'noni-single',
+      name: 'Noni Blindbox - Lẻ 1 hộp',
+      price: 299000,
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD5z_uQSVT62Y0iIoer2zl9GARhGPRcoHQQ-G_tFPaeqcY6vGd2RVkxgSxB_WjNnsq-4dPJHea0TAMa2JrxUmR6vv4dI3h-tlGkiCG75lWF9xszzs22k0mOQATOf3W6762NfAFjektOt4XugOcD0A7UAtTmStkfAat4DFbUAb1kJ9U-5Oao3USaqdFna3oAGv2kyZDn3tQNfVAklZhzFHMPWM4hs1i5147eYMalSstCgNNaw65FMmeH9r-iNfQIfBSQ0LsSSTTmHf1z'
+    },
+    fullset: {
+      id: 'noni-fullset',
+      name: 'Noni Blindbox - Nguyên Bộ (4 Hộp)',
+      price: 1149000,
+      img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBH6RQmKYXc6Y9tqpoeBmRhVcDGa9isoiT9D_eRWRE7_Z1sZ7_XAm2gGxtRGfrCpC5AcN6QwOW7UWT-hIL33wCIaeD83-lFkDfU8IfoCFIpXUl3TyKmg7fnJ5sloErmvObPrk6bqHQnsZbecUewZugCSnNAtUe2R5MAbrtA0A9sZmb1vKgwRmv-qXDRvtoxJbdTvw073NZXyGJIYSe6sy_VW-SkEQrNH1ormBEow2TJhWFBijiBG4KzI2wf28-XUBU94lN47PnxB-X0'
+    }
+  };
+
+  function getCart() {
+    try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; }
+    catch { return []; }
+  }
+
+  function saveCart(cart) {
+    localStorage.setItem(CART_KEY, JSON.stringify(cart));
+    updateCartCount();
+  }
+
+  function updateCartCount() {
+    const count = getCart().reduce((sum, item) => sum + (item.qty || 0), 0);
+    document.querySelectorAll('.cart-count').forEach(el => {
+      el.textContent = count;
+      el.classList.toggle('show', count > 0);
+    });
+  }
+
+  function selectOption(id) {
+    document.getElementById('opt-single').classList.remove('selected');
+    document.getElementById('opt-fullset').classList.remove('selected');
+    document.getElementById('opt-' + id).classList.add('selected');
+    document.getElementById(id).checked = true;
+  }
+
+  function changeQty(delta) {
+    qty = Math.max(1, qty + delta);
+    document.getElementById('qty-display').textContent = qty;
+  }
+
+  function addToCart() {
+    const option = document.querySelector('input[name="purchase_option"]:checked');
+    const product = { ...NONI_PRODUCTS[option.id], qty };
+    const cart = getCart();
+    const existing = cart.find(item => item.id === product.id);
+
+    if (existing) existing.qty += product.qty;
+    else cart.push(product);
+
+    saveCart(cart);
+
+    const btn = document.querySelector('.btn-add');
+    const original = btn.innerHTML;
+    btn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Đã thêm vào giỏ!';
+    btn.style.background = '#4caf50';
+    setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; }, 2000);
+  }
+
+  updateCartCount();
+  window.addEventListener('storage', updateCartCount);
+</script>
+</body>
+</html>
