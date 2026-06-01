@@ -384,10 +384,14 @@
           <span>Tạm tính (<span id="item-count">0</span> sản phẩm)</span>
           <span id="subtotal-val">0₫</span>
         </div>
+
+        <!--
         <div class="summary-row">
           <span>Phí vận chuyển</span>
           <span id="shipping-val">30.000₫</span>
         </div>
+        -->
+        
         <div class="voucher-row">
           <input type="text" placeholder="Nhập mã voucher" id="voucher-input">
           <button onclick="applyVoucher()">Áp dụng</button>
@@ -431,7 +435,7 @@
 
 <script>
   const CART_KEY = 'chopnon_cart';
-  const SHIPPING = 30000;
+  const SHIPPING = 0;
 
   // Product catalog for recommendations
   const ALL_PRODUCTS = [
@@ -518,7 +522,7 @@
 
     document.getElementById('item-count').textContent = itemCount;
     document.getElementById('subtotal-val').textContent = fmt(subtotal);
-    document.getElementById('shipping-val').textContent = fmt(SHIPPING);
+    // document.getElementById('shipping-val').textContent = fmt(SHIPPING);
     document.getElementById('total-val').textContent = fmt(Math.max(0, total));
   }
 
